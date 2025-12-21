@@ -79,15 +79,16 @@ body {
 # ---------------- Load Model Safely ----------------
 @st.cache_resource
 def load_model():
-    if not os.path.exists("model.pkl") or not os.path.exists("vectorizer.pkl"):
-        st.error("❌ Model files missing. Please train the model first.")
-        st.stop()
-    return (
-        pickle.load(open("model.pkl", "rb")),
-        pickle.load(open("vectorizer.pkl", "rb"))
-    )
+    base_path = os.path.dirname(os.path.abspath(__file__))
 
-model, vectorizer = load_model()
+    model_path = os.path.join(base_path, "model.pkl")
+    vectorizer_path = os.path.join(base_path, "vectorizer.pkl")
+
+    model = pickle.load(open(model_path, "rb"))
+    vectorizer = pickle.load(open(vectorizer_path, "rb"))
+
+    return model, vectorizer
+
 
 # ---------------- Text Cleaning ----------------
 def clean_text(text):
